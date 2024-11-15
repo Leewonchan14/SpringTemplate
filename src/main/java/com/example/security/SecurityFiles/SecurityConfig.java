@@ -2,7 +2,6 @@ package com.example.security.SecurityFiles;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +18,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
   private final JwtAuthFilter jwtAuthFilter;
+  // 허용하는 URL 패턴 목록
+
+  private static final String[] ALLOWED_URLS = {
+      "/swagger-ui/**",
+      "/v3/api-docs*/**",
+      "/api/auth/**",
+      "/api/public/**",
+  };
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,19 +36,15 @@ public class SecurityConfig {
         .httpBasic(AbstractHttpConfigurer::disable)
         // form 기반 인증 해제
         .formLogin(AbstractHttpConfigurer::disable)
-        // 세션 생성 정책 설정 (STATELESS: 세션을 사용하지 않음)
-        .sessionManagement(
-            authorize -> authorize
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(
-            authorize -> authorize
-                // 모든 요청에 대해 허용
-                .requestMatchers("/**")
-                .permitAll())
-
-        .addFilterBefore(
-            jwtAuthFilter, UsernamePasswordAuthenticationFilter.class //
-        );
+        .sessionManagement(authorize -> {
+          authorize.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        })
+        .authorizeHttpRequests(authorize -> {
+          authorize
+              .requestMatchers(ALLOWED_URLS).permitAll()
+              .anyRequest().authenticated();
+        })
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
