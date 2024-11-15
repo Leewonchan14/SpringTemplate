@@ -2,3 +2,7 @@
 	path = example-movie
 	url = https://github.com/Leewonchan14/SpringTemplate
 	branch = example-movie
+[submodule "example-security"]
+	path = example-security
+	url = https://github.com/Leewonchan14/SpringTemplate
+	branch = example-security
