@@ -5,7 +5,7 @@ import lombok.Getter;
 public class UserDTO {
 
   @Getter
-  public class CreateRequest {
+  public static class CreateRequest {
     private String email;
     private String password;
   }

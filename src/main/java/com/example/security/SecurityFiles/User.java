@@ -37,8 +37,7 @@ public class User {
     return List.of(new SimpleGrantedAuthority(this.getRole().name()));
   }
 
-}
-
-enum Role {
-  USER, ADMIN
+  public static enum Role {
+    USER, ADMIN
+  }
 }
