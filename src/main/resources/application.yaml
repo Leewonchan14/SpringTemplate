@@ -1,18 +1,28 @@
 spring:
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB.HOST}/${DB.NAME}
     username: ${DB.USERNAME}
     password: ${DB.PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
       mode: never
   jpa:
+    hibernate:
+      ddl-auto: update
+
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
         show_sql: true
         format_sql: true
+        use_sql_comments: true
 
   config:
     import: classpath:secret.yaml
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate.sql: DEBUG
+    org.hibernate.type: TRACE
+    org.hibernate.type.descriptor.sql: trace
