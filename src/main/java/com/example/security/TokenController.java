@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,6 @@ import com.example.security.SecurityFiles.JwtService;
 import com.example.security.SecurityFiles.User;
 import com.example.security.Services.UserService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,9 +23,10 @@ public class TokenController {
   final private JwtService jwtService;
   final private UserService userService;
 
-  @PostMapping()
+  @PostMapping
   public String createToken(
-      @RequestBody UserDTO.CreateRequest request) {
+      @RequestBody UserDTO.CreateRequest request //
+  ) {
 
     User findUser = userService.findOrCreate(request);
 
