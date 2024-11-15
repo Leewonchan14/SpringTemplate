@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,11 +24,11 @@ public class SecurityConfig {
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         // csrf 설정을 비활성화
-        .csrf(Customizer.withDefaults())
+        .csrf(AbstractHttpConfigurer::disable)
         // http 기본 인증 해제
-        .httpBasic(Customizer.withDefaults())
+        .httpBasic(AbstractHttpConfigurer::disable)
         // form 기반 인증 해제
-        .formLogin(Customizer.withDefaults())
+        .formLogin(AbstractHttpConfigurer::disable)
         // 세션 생성 정책 설정 (STATELESS: 세션을 사용하지 않음)
         .sessionManagement(
             authorize -> authorize
