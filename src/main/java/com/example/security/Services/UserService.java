@@ -21,16 +21,20 @@ public class UserService {
     System.out.println(request.getEmail());
     System.out.println("UserService.findOrCreate() : " + request.getPassword());
 
-    Optional<User> findUserOpt = userRepository.findByEmailAndPassword(
-        request.getEmail(), passwordEncoder.encode(request.getPassword()) //
+    String encodedPassword = passwordEncoder.encode(request.getPassword());
+
+    Optional<User> findUserOpt = userRepository.findByEmail(
+        request.getEmail() //
     );
 
     return findUserOpt.orElseGet(
-        () -> userRepository.save(User.builder()
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .role(User.Role.USER)
-            .build()) //
+        () -> userRepository.save(
+            User.builder()
+                .email(request.getEmail())
+                .password(encodedPassword)
+                .role(User.Role.USER)
+                .build() //
+        ) //
     );
   }
 };
