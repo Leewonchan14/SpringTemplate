@@ -1,5 +1,11 @@
 package com.example.security.SecurityFiles;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,6 +31,12 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  // 이부분! 역할에 따라 권한을 구분할것이기 때문에 필요하다!
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(this.getRole().name()));
+  }
+
 }
 
 enum Role {
